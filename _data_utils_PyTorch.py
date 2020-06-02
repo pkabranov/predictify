@@ -9,6 +9,8 @@ from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
+from df_generation import *
+
 #Update so that data is taken from generated DataFrame rather than csv
 data = feed_gen()
 y = data['play count']
