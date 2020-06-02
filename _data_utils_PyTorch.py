@@ -9,21 +9,11 @@ from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 
-#.csv files must be present in the curernt working directory
-train, test = train_test_split("complete_data.csv", test_size = 0.2)
-train.to_csv("train.csv"), test.to_csv("test.csv")
-
-train_dataset = Song_dataset(csv_file = "train.csv")
-test_dataset = Song_dataset(csv_file = "test.csv")
-
-df_train = pd.read_csv(train_dataset)
-df_test = pd.read_csv(test_dataset)
-
-#Assuming the play count is stored on the first column of the csv and its respective features following, change as necessary
-train_labels = df_train.iloc[:, 0]
-train_features = df_train.iloc[:, 1:]
-test_labels = df_test.iloc[:, 0]
-test_features = df_test.iloc[:, 1:]
+#Update so that data is taken from generated DataFrame rather than csv
+data = feed_gen()
+y = data['play count']
+X = data.drop('play count', axis = 1)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2)
 
 #define transforms, change if intending to transform data
 transform = None
@@ -58,8 +48,8 @@ class SongDataset(Dataset):
         return len(self.X)
 
 
-train_data = SongDataset(train_features, train_labels, transform)
-test_data = SongDataset(test_features, test_labels, transform)
+train_data = SongDataset(x_train, x_test, transform)
+test_data = SongDataset(y_train, y_test, transform)
 
 #Dataloaders
 trainloader = Dataloader(train_data, batch_size = 10, shuffle = True)
