@@ -29,7 +29,7 @@ class SongDatasetCSV(Dataset):
         features = self.data.iloc[index, 1:] #might have to do to_numpy() here depending if it works initially
         labels = self.data.iloc[index, 0]
 
-        if self.transfomr is not Nopne:
+        if self.transform is not None:
             features = self.transform(features)
 
         return features, labels
